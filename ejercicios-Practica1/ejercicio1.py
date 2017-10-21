@@ -6,7 +6,7 @@ from random import randint
 # thinking the number...
 print ("I'm thinking a number between 1 and 100...")
 thought_number = randint(1, 100)
-print ("¡Got it!")
+print ("Got it!")
 print ("..................")
 
 # 10 attempts to go
@@ -25,13 +25,13 @@ while (input_number != thought_number) and (count != 10) :
         elif input_number < thought_number :
             print ("My number is greater than yours...")
         elif input_number < 1 or input_number > 100 :
-            print ("¡¡I said a number between 1 and 100!!")
+            print ("I said a number between 1 and 100!!")
     except ValueError:
-        print("¡Hey, that's not a number!")
+        print("Hey, that's not a number!")
 
 
 # end of the game
 if (count >= 10):
     print ("\nYou already failed 10 times...\n")
 else:
-    print ("\n¡Yup! It was the " + str(thought_number) + ".\n")
+    print ("\nYup! It was the " + str(thought_number) + ".\n")
