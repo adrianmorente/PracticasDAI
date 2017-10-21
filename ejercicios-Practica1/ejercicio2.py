@@ -4,14 +4,14 @@
 from random import randint
 from time import time
 
-loops = 10
-list_of_numbers = range(loops)
+loops = 100
+list_of_numbers = list(range(loops))
 
 # random initialization of the numbers
 def generate_matrix():
     count = 0
     while count < loops :
-        list_of_numbers[count] = randint(1, 100)
+        list_of_numbers[count] = randint(1, 2000)
         count += 1
 
 # bubble sort implementation
@@ -25,33 +25,31 @@ def bubble_sort(n_list):
 
 # selection sort implementation
 def selection_sort(n_list):
-    for i in range(1, len(n_list)-1):
-        minimum = i
-        for j in range(i+1, len(n_list)):
-            if(n_list[j] < n_list[minimum]):
-                minimum = j;
-        aux = n_list[i]
-        n_list[i] = n_list[minimum]
-        n_list[minimum] = aux
+    for i in range(len(n_list)-1, 0, -1):
+        max_index=0
+        for index in range(1, i+1):
+            if n_list[index] > n_list[max_index]:
+                max_index = index
+        tmp = n_list[i]
+        n_list[i] = n_list[max_index]
+        n_list[max_index] = tmp
 
 # -------------------------------------------------------------- #
 
 generate_matrix()
-print ("Generated list: ")
+list_of_numbers_2 = list_of_numbers
+print ("STARTER LIST:")
 print (list_of_numbers)
+print ("\n\n- BUBBLE SORT -")
 start = time()
 bubble_sort(list_of_numbers)
 end = time()
-print ("\nSorted list (by bubble): ")
 print (list_of_numbers)
-print ("Invested time: " + str(end - start) + "s.")
+print ("--> Invested time: " + str(end - start) + "s.")
 
-generate_matrix()
-print ("\n\nGenerated list: ")
-print (list_of_numbers)
+print ("\n- SELECTION SORT -")
 start = time()
-selection_sort(list_of_numbers)
+selection_sort(list_of_numbers_2)
 end = time()
-print ("\nSorted list (by selection): ")
-print (list_of_numbers)
-print ("Invested time: " + str(end - start) + "s.")
+print (list_of_numbers_2)
+print ("--> Invested time: " + str(end - start) + "s.")
