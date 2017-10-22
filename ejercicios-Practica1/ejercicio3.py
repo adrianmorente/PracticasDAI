@@ -1,15 +1,15 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-tope = 200
+# we'll have an empty set in which we'll be adding all the numbers
+#being multiple of another one. If the number we're iterating on (i)
+#is not in the current set, we display it as a prime number.
+def criba_eratostenes(max):
+    multiples = set()
+    for i in range(2, max+1):
+        if i not in multiples:
+            print (i, end=", ")
+            multiples.update(range(i*i, max+1, i))
+    print("\n")
 
-list_of_numbers = range(tope)
-
-def criba_eratostenes(tope):
-    for i in range(0, tope):
-        list_of_numbers[i] = 0
-    for i in range(2, tope):
-        for j in range(i, tope, i):
-            list_of_numbers[j] = 1
-
-criba_eratostenes(tope)
+criba_eratostenes(1000)
