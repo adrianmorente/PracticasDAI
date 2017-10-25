@@ -82,6 +82,7 @@ def contact():
 # register form
 @app.route('/register', methods=['GET', 'POST'])
 def signup():
+    registered = False
     if request.method == 'POST':
         s = shelve.open('users.db')
         try:
@@ -90,9 +91,10 @@ def signup():
             user = { 'username' : username, 'password' : password }
             s[username] = user
             s.close()
+            registered = True
         finally:
             s.close()
-    return render_template('register.html')
+    return render_template('register.html', value=registered)
 
 # popping the username out of the session
 @app.route('/logout')
@@ -134,4 +136,4 @@ def page_not_found(error):
 
 # enabled debug mode
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug = True)
+    app.run(host='0.0.0.0', debug=True)
