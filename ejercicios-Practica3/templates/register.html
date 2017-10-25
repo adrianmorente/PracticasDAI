@@ -14,9 +14,13 @@
         <p>Username: <input type="text" name="username" /></p>
         <p>Password: <input type="password" name="password" /></p>
         <p>
+          {% if not value %}
           <a href="/register">
             <input type="submit" class="w3-button w3-blue w3-round-xxlarge"></input>
           </a>
+          {% else %}
+          <button class="w3-button w3-blue w3-round-xxlarge"><a href="home">Back to home!</a></button>
+          {% endif %}
         </p>
       </form>
     </div>
