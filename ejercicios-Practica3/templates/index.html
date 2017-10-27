@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html>
+
   <head>
     <meta charset="utf-8"/>
-    <title>Welcome</title>
+    <title>{% block title %}{% endblock %} - Adrian Morente</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"/>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"/>
-    <link rel="stylesheet" href="static/style.css"/>
     <link href="https://fonts.googleapis.com/css?family=Fredoka+One" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Patua+One" rel="stylesheet">
   </head>
-  <body>
 
+  <body>
     <header class="w3-container w3-row w3-blue">
       <div class="w3-third w3-padding-16 w3-center">
         <img class="w3-center" src="../static/images/{{ content.logo }}" alt="logo python" />
@@ -61,8 +62,11 @@
       </div>
     </div>
 
+    {% block footer %}
     <footer class="w3-blue">
-      <h4>Adrián Morente Gabaldón (GPLv3)</h4>
+      <h4>&copy; Adrián Morente Gabaldón (GPLv3)</h4>
     </footer>
+    {% endblock %}
+
   </body>
 </html>
