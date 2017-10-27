@@ -25,7 +25,7 @@ def index():
         'body_section' : 'Homepage',
         'body_image' : 'home.png',
         'body_image_link' : 'home',
-        'body_text' : 'This is my personal webpage. You might find it a little boring but who cares to be honest.'
+        'body_text' : 'This is my personal webpage. You might find it a little bit boring but who cares to be honest.'
     }
 
     if request.method == 'POST':
@@ -33,6 +33,7 @@ def index():
         user = s.get(request.form['username'], None)
         if user is not None and request.form['password']==user['password']:
             session['username'] = user['username']
+            s.close()
 
     if 'username' in session:
         return render_template('index.html', content=content, loggedIn=True)
