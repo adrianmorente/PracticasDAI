@@ -4,7 +4,7 @@
 from PIL import Image
 from mandelbrot import *
 
-filename = "mandelbrot"
+filename = "mandelbrot.png"
 
 print ("#------------------------------------------------------#")
 print ("#                    MANDELBROT SET                    #")
