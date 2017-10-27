@@ -4,28 +4,29 @@
 from flask import Flask, url_for, render_template
 app = Flask(__name__)
 
-@app.route('/')
-def hello_world():
-    return render_template('hola.html')
-
 ####################################################################
 # Ejercicio 2 - Sirviendo contenido estático
 ####################################################################
 
 # Puedo acceder a la imagen a través de la URL:
-#       http://localhost:8080/static/images/Logo_Python.png
+#       http://localhost:8080/static/images/python-logo.png
 # El siguiente método solo imprime la URL...
 @app.route('/image')
 def show_image():
-    return url_for('static', filename='images/Logo_Python.png')
+    return url_for('static', filename='images/python-logo.png')
 
 ####################################################################
 # Ejercicio 3 - Manejo de URLs
 ####################################################################
 
+@app.route('/')
 @app.route('/hello')
 def hello():
-    return 'Hello, world!'
+    return render_template('hello.html')
+
+@app.route('/user')
+def show_unknown_user():
+    return 'Hola, ¿no tienes usuario? ¿No eres NADIE?'
 
 @app.route('/user/pepe')
 def show_pepe_user():
