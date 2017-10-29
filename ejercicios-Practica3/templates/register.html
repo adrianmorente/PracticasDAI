@@ -1,22 +1,16 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    {% block head %}
-    <meta charset="utf-8" />
-    <title>Register form</title>
-    <link rel="stylesheet" href="static/simple-modal.css" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"/>
-    <link href="https://fonts.googleapis.com/css?family=Patua+One" rel="stylesheet">
-    {% endblock %}
-  </head>
-  <body>
-    <div class="bg">
-      <form action="/" class="w3-display-middle" method="post">
-        <p>Username: <input type="text" name="username" /></p>
-        <p>Password: <input type="password" name="password" /></p>
-        <p><input type="submit" class="w3-button w3-blue w3-round-xxlarge"></input></p>
-      </form>
-    </div>
-  </body>
-</html>
+{% extends "full-view.html" %}
+{% block title %}
+  Sign up as new user
+{% endblock %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+{% block content %}
+  {% block centeredcontent %}
+  <form action="/" method="post">
+    <p>Username: <input type="text" name="username" /></p>
+    <p>Password: <input type="password" name="password" /></p>
+    <p><input type="submit" class="w3-button w3-blue w3-round-xxlarge"></input></p>
+  </form>
+  {% endblock %}
+{% endblock %}
