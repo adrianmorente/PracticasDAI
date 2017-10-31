@@ -3,11 +3,20 @@
 
 from flask import Flask, redirect, url_for, request, render_template, session
 import jinja2
-import shelve
+import shelve, queue
 from mandelbrot import *
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'random'
+app.secret_key = 'random'
+last_visited = queue.Queue(3)
+
+# remembering the last visited pages
+@app.after_request
+def remember_three_pages(response):
+    if last_visited.qsize() == 3:
+        last_visited.get()
+    last_visited.put(request.url)
+    return response
 
 # showing the whole website (plus login form)
 @app.route('/', methods=['GET', 'POST'])
@@ -28,6 +37,7 @@ def index():
         'body_text' : 'This is my personal webpage. You might find it a little bit boring but who cares to be honest.'
     }
 
+    # we'll authenticate the user and initialize the urls dictionary
     if request.method == 'POST':
         s = shelve.open('users.db')
         user = s.get(request.form['username'], None)
@@ -59,6 +69,11 @@ def github():
         'body_image_link' : 'https://github.com/adrianmorente',
         'body_text' : 'This is my Github site. There you\'ll find a bunch of repos with open source code from me and my mates.'
     }
+    if 'username' in session:
+        return render_template('index.html', content=content, loggedIn=True)
+    else:
+        return render_template('index.html', content=content, loggedIn=False)
+
     return render_template('index.html', content=content)
 
 # showing a link to my personal twitter page
@@ -78,12 +93,16 @@ def contact():
         'body_image_link' : 'https://twitter.com/81adrianmorente',
         'body_text' : 'That\'s my Twitter account. I swear that you don\'t wanna follow me if you don\'t like basketball.'
     }
+    if 'username' in session:
+        return render_template('index.html', content=content, loggedIn=True)
+    else:
+        return render_template('index.html', content=content, loggedIn=False)
+
     return render_template('index.html', content=content)
 
 # register form
 @app.route('/register', methods=['GET', 'POST'])
 def signup():
-    registered = False
     if request.method == 'POST':
         s = shelve.open('users.db')
         try:
@@ -92,16 +111,61 @@ def signup():
             user = { 'username' : username, 'password' : password }
             s[username] = user
             s.close()
-            registered = True
         finally:
             s.close()
-    return render_template('register.html', value=registered)
+    return render_template('register.html')
 
 # popping the username out of the session
 @app.route('/logout')
 def logout():
     session.pop('username', None)
     return redirect(url_for('index'))
+
+@app.route('/edit')
+def edit():
+    content = {
+        'title' : 'Adrián Morente',
+        'subtitle': 'My personal webpage',
+        'logo': 'user-icon.png',
+        'nav_links' : [
+            ("home", "Home"),
+            ("github", "Github Account"),
+            ("contact", "Contact")
+        ],
+        'body_section' : 'Github page',
+        'body_image' : 'github.png',
+        'body_image_link' : 'https://github.com/adrianmorente',
+        'body_text' : 'This is my Github site. There you\'ll find a bunch of repos with open source code from me and my mates.'
+    }
+    if 'username' in session:
+        return render_template('index.html', content=content, loggedIn=True)
+    else:
+        return render_template('index.html', content=content, loggedIn=False)
+
+    return render_template('index.html', content=content)
+
+@app.route('/data')
+def data():
+    content = {
+        'title' : 'Adrián Morente',
+        'subtitle': 'My personal webpage',
+        'logo': 'user-icon.png',
+        'nav_links' : [
+            ("home", "Home"),
+            ("github", "Github Account"),
+            ("contact", "Contact")
+        ],
+        'body_section' : 'Github page',
+        'body_image' : 'github.png',
+        'body_image_link' : 'https://github.com/adrianmorente',
+        'body_text' : 'This is my Github site. There you\'ll find a bunch of repos with open source code from me and my mates.'
+    }
+    if 'username' in session:
+        return render_template('index.html', content=content, loggedIn=True)
+    else:
+        return render_template('index.html', content=content, loggedIn=False)
+
+    return render_template('index.html', content=content)
 
 @app.route('/mandelbrot')
 def mandelbrot():
@@ -114,21 +178,6 @@ def mandelbrot():
     filename = "static/mandelbrot.png"
     renderizaMandelbrot(x1, y1, x2, y2, width, iters, filename)
     return render_template('mandelbrot.html')
-
-@app.route('/data')
-def data():
-    content = {
-        'title' : 'Adrián Morente',
-        'subtitle': 'My personal webpage',
-        'logo': 'user-icon.png',
-        'nav_links' : [
-            ("home", "Home"),
-            ("github", "Github Account"),
-            ("contact", "--> Contact")
-        ],
-        'body_logged' : ''
-    }
-    return render_template('index.html', content=content)
 
 # just when you forget the URL...
 @app.errorhandler(404)

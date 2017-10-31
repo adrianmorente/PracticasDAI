@@ -1,20 +1,24 @@
 <!DOCTYPE html>
 <html>
 
+  {% block head %}
   <head>
     <meta charset="utf-8"/>
-    <title>{% block title %}{% endblock %} - Adrian Morente</title>
+    <title>AMorente - {% block title %}{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"/>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"/>
+    <link rel="icon" type="image/png" href="static/images/dark-icon.png" />
     <link href="https://fonts.googleapis.com/css?family=Fredoka+One" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Patua+One" rel="stylesheet">
   </head>
+  {% endblock %}
 
   <body>
-    <header class="w3-container w3-row w3-blue">
+    {% block header %}
+    <header class="w3-container w3-row w3-padding-16">
       <div class="w3-third w3-padding-16 w3-center">
-        <img class="w3-center" src="../static/images/{{ content.logo }}" alt="logo python" />
+        <img src="../static/images/{{ content.logo }}" alt="Bball logo" style="width=100%"/>
       </div>
       <div id="center-header" class="w3-third w3-padding-16 w3-center">
         <h1>{{ content.title }}</h1>
@@ -36,20 +40,26 @@
         {% endif %}
       </div>
     </header>
+    {% endblock %}
 
+    {% block content %}
     <div id="centered-content" class="w3-container w3-row w3-padding-16">
-      <div class="navbar w3-col m3 w3-left">
+      {% block navbar %}
+      <div class="navbar w3-col m3 w3-padding-32">
         <ul>
-          {% for link in content.nav_links %}
-            <li><a href="/{{ link[0] }}">{{ link[1] }}</a></li>
-          {% endfor %}
-          {% if session['username'] %}
-            <li><a href="/edit">Edit</a></li>
-            <li><a href="/data">View data</a></li>
-          {% endif %}
+          {% block links %}
+            {% for link in content.nav_links %}
+              <li><a href="/{{ link[0] }}">{{ link[1] }}</a></li>
+            {% endfor %}
+            {% if session['username'] %}
+              <li><a href="/edit">Edit</a></li>
+              <li><a href="/data">View data</a></li>
+            {% endif %}
+          {% endblock %}
         </ul>
       </div>
-      <div id="main-content" class="w3-col m8 w3-right">
+      {% endblock %}
+      <div id="main-content" class="w3-col m8 w3-right w3-padding-16">
         <div class="w3-container w3-center">
           <h1>{{ content.body_section }}</h1>
           <div class="w3-center">
@@ -61,9 +71,10 @@
         </div>
       </div>
     </div>
+    {% endblock %}
 
     {% block footer %}
-    <footer class="w3-blue">
+    <footer class="w3-row w3-padding-16">
       <h4>&copy; Adrián Morente Gabaldón (GPLv3)</h4>
     </footer>
     {% endblock %}
