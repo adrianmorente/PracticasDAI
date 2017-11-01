@@ -68,3 +68,7 @@ ul, li {
   background-color: rgb(70, 100, 186);
   padding: 12px;
 }
+
+a {
+  text-decoration: none;
+}
