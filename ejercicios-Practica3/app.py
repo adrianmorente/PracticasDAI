@@ -7,48 +7,44 @@ import shelve, queue
 from mandelbrot import *
 
 app = Flask(__name__)
-last_visited = queue.Queue(3)
-
-# remembering the last visited pages
-@app.after_request
-def remember_three_pages(response):
-    if last_visited.qsize() == 3:
-        last_visited.get()
-    last_visited.put(request.url)
-    return response
+app.secret_key = 'random key for me by myself'
 
 # showing the whole website (plus login form)
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/home', methods=['GET', 'POST'])
 def index():
-    # we'll authenticate the user and initialize the urls dictionary
-    if request.method == 'POST':
-        s = shelve.open('users.db')
-        user = s.get(request.form['username'], None)
-        if user is not None and request.form['password']==user['password']:
-            session['username'] = user['username']
-            s.close()
+    global isLoggedIn
+    isLoggedIn = True
 
-    if 'username' in session:
-        return render_template('index.html', loggedIn=True)
-    else:
-        return render_template('index.html', loggedIn=False)
+    if(request.method=='POST'):
+        db = shelve.open('users.db')
+        user = db.get(request.form['username'], None)
+        if user is not None:
+            user = user['username']
+        password = request.form['password']
 
-    return render_template('index.html')
+        if password == db[user]['password']:
+            isLoggedIn = True
+            session['username'] = user
+        else:
+            isLoggedIn = False
+        db.close()
+    elif not 'username' in session:
+        isLoggedIn = False
+
+    return render_template('index.html', loggedIn=isLoggedIn)
 
 # register form
 @app.route('/register', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
-        s = shelve.open('users.db')
-        try:
-            username = request.form['username']
-            password = request.form['password']
-            user = { 'username' : username, 'password' : password }
-            s[username] = user
-            s.close()
-        finally:
-            s.close()
+        db = shelve.open('users.db')
+        username = request.form['username']
+        password = request.form['password']
+        db[username] = { 'username' : username, 'password' : password }
+        db.close()
+        return redirect(url_for('index'))
+
     return render_template('register.html')
 
 # popping the username out of the session
@@ -60,12 +56,34 @@ def logout():
 # showing a link to my personal github page
 @app.route('/github', methods=['GET', 'POST'])
 def github():
-    return render_template('github.html')
+    return render_template('github.html', loggedIn=isLoggedIn)
 
 # showing a link to my personal twitter page
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
-    return render_template('contact.html')
+    return render_template('contact.html', loggedIn=isLoggedIn)
+
+# now you can edit your attributes of logged user
+@app.route('/edit', methods=['GET', 'POST'])
+def edit():
+    db = shelve.open('users.db')
+    content = db.get(session['username'], None)
+    db.close()
+    return render_template('edit.html', loggedIn=isLoggedIn, value=content)
+
+# just a walkthrough to ease the modification of my own data
+@app.route('/editing', methods=['POST'])
+def editing():
+    db = shelve.open('users.db')
+    del db[session['username']]
+    tmp_username = request.form['username']
+    tmp_password = request.form['password']
+    db[tmp_username] = { 'username' : tmp_username, 'password' : tmp_password }
+    session['username'] = tmp_username
+    content = db[tmp_username]
+    db.close()
+
+    return render_template('edit.html', loggedIn=isLoggedIn, value=content)
 
 # simple page which shows you a new mandelbrot fractal. it takes the args by GET
 #method on the url of the browser
