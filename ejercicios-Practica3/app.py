@@ -7,7 +7,6 @@ import shelve, queue
 from mandelbrot import *
 
 app = Flask(__name__)
-app.secret_key = 'random'
 last_visited = queue.Queue(3)
 
 # remembering the last visited pages
@@ -22,21 +21,6 @@ def remember_three_pages(response):
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/home', methods=['GET', 'POST'])
 def index():
-    content = {
-        'title' : 'Adrián Morente',
-        'subtitle': 'My personal webpage',
-        'logo': 'user-icon.png',
-        'nav_links' : [
-            ("home", "--> Home"),
-            ("github", "Github Account"),
-            ("contact", "Contact")
-        ],
-        'body_section' : 'Homepage',
-        'body_image' : 'home.png',
-        'body_image_link' : 'home',
-        'body_text' : 'This is my personal webpage. You might find it a little bit boring but who cares to be honest.'
-    }
-
     # we'll authenticate the user and initialize the urls dictionary
     if request.method == 'POST':
         s = shelve.open('users.db')
@@ -46,59 +30,11 @@ def index():
             s.close()
 
     if 'username' in session:
-        return render_template('index.html', content=content, loggedIn=True)
+        return render_template('index.html', loggedIn=True)
     else:
-        return render_template('index.html', content=content, loggedIn=False)
+        return render_template('index.html', loggedIn=False)
 
-    return render_template('index.html', content=content)
-
-# showing a link to my personal github page
-@app.route('/github', methods=['GET', 'POST'])
-def github():
-    content = {
-        'title' : 'Adrián Morente',
-        'subtitle': 'My personal webpage',
-        'logo': 'user-icon.png',
-        'nav_links' : [
-            ("home", "Home"),
-            ("github", "--> Github Account"),
-            ("contact", "Contact")
-        ],
-        'body_section' : 'Github page',
-        'body_image' : 'github.png',
-        'body_image_link' : 'https://github.com/adrianmorente',
-        'body_text' : 'This is my Github site. There you\'ll find a bunch of repos with open source code from me and my mates.'
-    }
-    if 'username' in session:
-        return render_template('index.html', content=content, loggedIn=True)
-    else:
-        return render_template('index.html', content=content, loggedIn=False)
-
-    return render_template('index.html', content=content)
-
-# showing a link to my personal twitter page
-@app.route('/contact', methods=['GET', 'POST'])
-def contact():
-    content = {
-        'title' : 'Adrián Morente',
-        'subtitle': 'My personal webpage',
-        'logo': 'user-icon.png',
-        'nav_links' : [
-            ("home", "Home"),
-            ("github", "Github Account"),
-            ("contact", "--> Contact")
-        ],
-        'body_section' : 'Twitter account',
-        'body_image' : 'contact.png',
-        'body_image_link' : 'https://twitter.com/81adrianmorente',
-        'body_text' : 'That\'s my Twitter account. I swear that you don\'t wanna follow me if you don\'t like basketball.'
-    }
-    if 'username' in session:
-        return render_template('index.html', content=content, loggedIn=True)
-    else:
-        return render_template('index.html', content=content, loggedIn=False)
-
-    return render_template('index.html', content=content)
+    return render_template('index.html')
 
 # register form
 @app.route('/register', methods=['GET', 'POST'])
@@ -121,6 +57,18 @@ def logout():
     session.pop('username', None)
     return redirect(url_for('index'))
 
+# showing a link to my personal github page
+@app.route('/github', methods=['GET', 'POST'])
+def github():
+    return render_template('github.html')
+
+# showing a link to my personal twitter page
+@app.route('/contact', methods=['GET', 'POST'])
+def contact():
+    return render_template('contact.html')
+
+# simple page which shows you a new mandelbrot fractal. it takes the args by GET
+#method on the url of the browser
 @app.route('/mandelbrot')
 def mandelbrot():
     x1 = int(request.args.get('x1'))
