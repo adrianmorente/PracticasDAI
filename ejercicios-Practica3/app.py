@@ -9,6 +9,17 @@ from mandelbrot import *
 app = Flask(__name__)
 app.secret_key = 'random key for me by myself'
 
+# counting the last visited pages
+@app.before_request
+def store_visted_urls():
+    last_one = request.url
+    if request.url is not "http://127.0.0.1:5000/favicon.ico":
+        if 'last_visited_1' in session:
+            session['last_visited_2'] = session['last_visited_1']
+        if 'last_visited_3' in session:
+            session['last_visited_1'] = session['last_visited_3']
+        session['last_visited_3'] = last_one
+
 # showing the whole website (plus login form)
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/home', methods=['GET', 'POST'])
@@ -26,6 +37,7 @@ def index():
         if password == db[user]['password']:
             isLoggedIn = True
             session['username'] = user
+            session['urls'] = []
         else:
             isLoggedIn = False
         db.close()
