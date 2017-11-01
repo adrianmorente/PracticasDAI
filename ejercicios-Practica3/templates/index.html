@@ -48,11 +48,15 @@
       <div class="navbar w3-col m3 w3-padding-32">
         <ul>
           {% block links %}
-            <li><a href="/home">Home</a></li>
-            <li><a href="/github">Github account</a></li>
-            <li><a href="/contact">Contact (Twitter)</a></li>
+            <a href="/home"><li>Home</li></a>
+            <a href="/github"><li>Github account</li></a>
+            <a href="/contact"><li>Contact (Twitter)</li></a>
             {% if session['username'] %}
-              <li><a href="/edit">Edit</a></li>
+              <a href="/edit"><li>Edit</li></a>
+              <br />
+              <a href={{ session['last_visited_1'] }}><li>Last visited page (1st)</li></a>
+              <a href={{ session['last_visited_2'] }}><li>Last visited page (2nd)</li></a>
+              <a href={{ session['last_visited_3'] }}><li>Last visited page (3rd)</li></a>
             {% endif %}
           {% endblock %}
         </ul>
