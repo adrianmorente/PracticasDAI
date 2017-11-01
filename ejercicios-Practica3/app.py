@@ -121,52 +121,6 @@ def logout():
     session.pop('username', None)
     return redirect(url_for('index'))
 
-@app.route('/edit')
-def edit():
-    content = {
-        'title' : 'Adrián Morente',
-        'subtitle': 'My personal webpage',
-        'logo': 'user-icon.png',
-        'nav_links' : [
-            ("home", "Home"),
-            ("github", "Github Account"),
-            ("contact", "Contact")
-        ],
-        'body_section' : 'Github page',
-        'body_image' : 'github.png',
-        'body_image_link' : 'https://github.com/adrianmorente',
-        'body_text' : 'This is my Github site. There you\'ll find a bunch of repos with open source code from me and my mates.'
-    }
-    if 'username' in session:
-        return render_template('index.html', content=content, loggedIn=True)
-    else:
-        return render_template('index.html', content=content, loggedIn=False)
-
-    return render_template('index.html', content=content)
-
-@app.route('/data')
-def data():
-    content = {
-        'title' : 'Adrián Morente',
-        'subtitle': 'My personal webpage',
-        'logo': 'user-icon.png',
-        'nav_links' : [
-            ("home", "Home"),
-            ("github", "Github Account"),
-            ("contact", "Contact")
-        ],
-        'body_section' : 'Github page',
-        'body_image' : 'github.png',
-        'body_image_link' : 'https://github.com/adrianmorente',
-        'body_text' : 'This is my Github site. There you\'ll find a bunch of repos with open source code from me and my mates.'
-    }
-    if 'username' in session:
-        return render_template('index.html', content=content, loggedIn=True)
-    else:
-        return render_template('index.html', content=content, loggedIn=False)
-
-    return render_template('index.html', content=content)
-
 @app.route('/mandelbrot')
 def mandelbrot():
     x1 = int(request.args.get('x1'))
