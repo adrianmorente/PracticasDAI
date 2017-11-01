@@ -53,7 +53,6 @@
             <li><a href="/contact">Contact (Twitter)</a></li>
             {% if session['username'] %}
               <li><a href="/edit">Edit</a></li>
-              <li><a href="/data">View data</a></li>
             {% endif %}
           {% endblock %}
         </ul>
@@ -62,14 +61,18 @@
       <div id="main-content" class="w3-col m8 w3-right w3-padding-16">
         <div class="w3-container w3-center">
           <h1>{% block content_section_title %}Home page{% endblock %}</h1>
+          {% block centeredfield %}
           <div class="w3-center">
             <a href="{% block content_image_link %}home{% endblock %}">
               <img src="../static/images/{% block content_image %}home.png{% endblock %}" />
             </a>
           </div>
+          {% endblock %}
+          {% block centeredfield_text %}
           <div class="w3-center">
             <p>{% block content_section_text %}Hi, dear visitor. This is my new ugly page.{% endblock %}</p>
           </div>
+          {% endblock %}
         </div>
       </div>
     </div>
