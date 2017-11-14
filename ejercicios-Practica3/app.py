@@ -2,8 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from flask import Flask, redirect, url_for, request, render_template, session
-import jinja2
-import shelve, queue
+import shelve
 from mandelbrot import *
 
 app = Flask(__name__)
@@ -12,6 +11,7 @@ app.secret_key = 'random key for me by myself'
 # counting the last visited pages
 @app.before_request
 def store_visted_urls():
+    session['logged_in'] = 'username' in session
     last_one = request.url
     if request.url is not "http://127.0.0.1:5000/favicon.ico":
         if 'last_visited_1' in session:
@@ -24,9 +24,6 @@ def store_visted_urls():
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/home', methods=['GET', 'POST'])
 def index():
-    global isLoggedIn
-    isLoggedIn = True
-
     if(request.method=='POST'):
         db = shelve.open('users.db')
         user = db.get(request.form['username'], None)
@@ -35,16 +32,16 @@ def index():
         password = request.form['password']
 
         if password == db[user]['password']:
-            isLoggedIn = True
+            session['logged_in'] = True
             session['username'] = user
             session['urls'] = []
         else:
-            isLoggedIn = False
+            session['logged_in'] = False
         db.close()
     elif not 'username' in session:
-        isLoggedIn = False
+        session['logged_in'] = False
 
-    return render_template('index.html', loggedIn=isLoggedIn)
+    return render_template('index.html', loggedIn=session['logged_in'])
 
 # register form
 @app.route('/register', methods=['GET', 'POST'])
@@ -68,12 +65,12 @@ def logout():
 # showing a link to my personal github page
 @app.route('/github', methods=['GET', 'POST'])
 def github():
-    return render_template('github.html', loggedIn=isLoggedIn)
+    return render_template('github.html', loggedIn=session['logged_in'])
 
 # showing a link to my personal twitter page
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
-    return render_template('contact.html', loggedIn=isLoggedIn)
+    return render_template('contact.html', loggedIn=session['logged_in'])
 
 # now you can edit your attributes of logged user
 @app.route('/edit', methods=['GET', 'POST'])
@@ -81,7 +78,7 @@ def edit():
     db = shelve.open('users.db')
     content = db.get(session['username'], None)
     db.close()
-    return render_template('edit.html', loggedIn=isLoggedIn, value=content)
+    return render_template('edit.html', loggedIn=session['logged_in'], value=content)
 
 # just a walkthrough to ease the modification of my own data
 @app.route('/editing', methods=['POST'])
@@ -95,7 +92,7 @@ def editing():
     content = db[tmp_username]
     db.close()
 
-    return render_template('edit.html', loggedIn=isLoggedIn, value=content)
+    return render_template('edit.html', loggedIn=session['logged_in'], value=content)
 
 # simple page which shows you a new mandelbrot fractal. it takes the args by GET
 #method on the url of the browser
