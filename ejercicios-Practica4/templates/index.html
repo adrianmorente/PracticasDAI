@@ -6,87 +6,133 @@
     <meta charset="utf-8"/>
     <title>AMorente - {% block title %}Home{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"/>
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"/>
+    <link rel="stylesheet" href="../static/css/style.css"/>
+    <link rel="stylesheet" href="../static/css/materialize.min.css"/>
     <link rel="icon" type="image/png" href="static/images/dark-icon.png" />
-    <link href="https://fonts.googleapis.com/css?family=Fredoka+One" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css?family=Patua+One" rel="stylesheet" />
   </head>
   {% endblock %}
 
   <body>
-    {% block header %}
-    <header class="w3-container w3-row w3-padding-16">
-      <div class="w3-third w3-padding-16 w3-center">
-        <img src="../static/images/user-icon.png" alt="Bball logo" style="width=100%"/>
-      </div>
-      <div id="center-header" class="w3-third w3-padding-16 w3-center">
-        <h1>{% block content_title %}Adrian Morente{% endblock %}</h1>
-        <h3>{% block content_subtitle %}Welcome to my new page!{% endblock %}</h3>
-      </div>
-      <div class="w3-third w3-padding-16 w3-center">
-        {% if not loggedIn %}
-        <form action="/" method="post">
-          <p>Username: <input type="text" name="username" /></p>
-          <p>Password: <input type="password" name="password" /></p>
-          <p><input type="submit" value="Login" />
-          <button><a href="/register">Sign up</a></button></p>
-        </form>
-        {% else %}
-          <div class="logged">
-            <p>Welcome, dear {{ session['username'] }}</p>
-            <p><a href="/logout">Log out</a></p>
-          </div>
-        {% endif %}
-      </div>
-    </header>
-    {% endblock %}
 
-    {% block content %}
-    <div id="centered-content" class="w3-container w3-row w3-padding-16">
-      {% block navbar %}
-      <div class="navbar w3-col m3 w3-padding-32">
-        <ul>
-          {% block links %}
-            <a href="/home"><li>Home</li></a>
-            <a href="/github"><li>Github account</li></a>
-            <a href="/contact"><li>Contact (Twitter)</li></a>
-            {% if session['username'] %}
-              <a href="/edit"><li>Edit</li></a>
-              <br />
-              <a href={{ session['last_visited_1'] }}><li>Last visited page (1st)</li></a>
-              <a href={{ session['last_visited_2'] }}><li>Last visited page (2nd)</li></a>
-              <a href={{ session['last_visited_3'] }}><li>Last visited page (3rd)</li></a>
-            {% endif %}
-          {% endblock %}
-        </ul>
+    <div class="container row lime lighten-4">
+
+      {% block header %}
+
+        <!-- navigation bar -->
+        {% block navbar %}
+        <nav>
+          <div class="nav-wrapper">
+            <!-- logo, title & form -->
+            <div class="row">
+              <div class="col s4">
+              </div>
+              <div class="col s4">
+                <p>{% block content_title %}Restaurantes DAI{% endblock %}</p>
+                <p>{% block content_subtitle %}Colección de restaurantes de ejemplo{% endblock %}</p>
+              </div>
+              <div class="col s4">
+                {% if not loggedIn %}
+                <form action="/" method="post">
+                  <p>Usuario: <input type="text" name="username" /></p>
+                  <p>Contraseña: <input type="password" name="password" /></p>
+                  <p><input type="submit" value="Iniciar sesión" />
+                  <button><a href="/register">Registrarse</a></button></p>
+                </form>
+                {% else %}
+                  <div>
+                    <p>Bienvenido, {{ session['username'] }}</p>
+                    <p><a href="/logout">Log out</a></p>
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+
+            <!-- navbar -->
+            <div class="row">
+              <ul id="nav-mobile" class="left hide-on-med-and-down">
+                {% block links %}
+                  <li><a href="/home">Inicio</a></li>
+                  <li><a href="/home">Inicio</a></li>
+                  <li><a href="/contact">Contact</a></li>
+                {% endblock %}
+              </ul>
+            </div>
+          </div>
+        </nav>
+        {% endblock %}
+
+      {% endblock %}
+
+
+
+
+
+
+
+
+
+
+      <!-- main content of the page -->
+      {% block content %}
+      <div class="container row">
+        <h1>{% block content_section_title %}Home page{% endblock %}</h1>
+        {% block centeredfield %}
+        <div class="w3-center">
+          <a href="{% block content_image_link %}home{% endblock %}">
+            <img src="../static/images/{% block content_image %}home.png{% endblock %}" class="responsive-img"/>
+          </a>
+        </div>
+        {% endblock %}
+        {% block centeredfield_text %}
+        <div class="w3-center">
+          <p>{% block content_section_text %}Hi, dear visitor. This is my new ugly page.{% endblock %}</p>
+        </div>
+        {% endblock %}
       </div>
       {% endblock %}
-      <div id="main-content" class="w3-col m8 w3-right w3-padding-16">
-        <div class="w3-container w3-center">
-          <h1>{% block content_section_title %}Home page{% endblock %}</h1>
-          {% block centeredfield %}
-          <div class="w3-center">
-            <a href="{% block content_image_link %}home{% endblock %}">
-              <img src="../static/images/{% block content_image %}home.png{% endblock %}" />
-            </a>
-          </div>
-          {% endblock %}
-          {% block centeredfield_text %}
-          <div class="w3-center">
-            <p>{% block content_section_text %}Hi, dear visitor. This is my new ugly page.{% endblock %}</p>
-          </div>
-          {% endblock %}
-        </div>
-      </div>
-    </div>
-    {% endblock %}
 
-    {% block footer %}
-    <footer class="w3-row w3-padding-16">
-      <h4>&copy; Adrián Morente Gabaldón (MIT License)</h4>
-    </footer>
-    {% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+      {% block footer %}
+      <footer class="page-footer teal darken-2">
+        <div class="container">
+          <div class="row">
+            <div class="col l6 s12">
+              <h5 class="white-text">Adrián Morente Gabaldón</h5>
+              <p class="grey-text text-lighten-4">Proyecto realizado para la asignatura de Desarrollo de Aplicaciones para Internet.</p>
+            </div>
+            <div class="col l4 offset-l2 s12">
+              <h5 class="white-text">Otros enlaces de interés</h5>
+              <ul>
+                <li><a class="grey-text text-lighten-3" href="#!">GitHub</a></li>
+                <li><a class="grey-text text-lighten-3" href="#!">Twitter</a></li>
+                <li><a class="grey-text text-lighten-3" href="#!">LinkedIn</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="footer-copyright">
+          <div class="container">
+            &copy; Adrián Morente Gabaldón (MIT License) - Universidad de Granada
+          </div>
+        </div>
+      </footer>
+      {% endblock %}
+
+      <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+      <script type="text/javascript" src="../static/js/materialize.min.js"></script>
+
+    </div>
 
   </body>
 </html>
