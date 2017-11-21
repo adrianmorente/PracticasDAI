@@ -4,135 +4,128 @@
   {% block head %}
   <head>
     <meta charset="utf-8"/>
-    <title>AMorente - {% block title %}Home{% endblock %}</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <link rel="stylesheet" href="../static/css/style.css"/>
-    <link rel="stylesheet" href="../static/css/materialize.min.css"/>
-    <link rel="icon" type="image/png" href="static/images/dark-icon.png" />
+    <title>AMorente - {% block title %}Inicio{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <link rel="stylesheet" href="../static/css/style.css" />
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+
+    <!-- Font Awesome icons -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
   </head>
   {% endblock %}
 
   <body>
 
-    <div class="container row lime lighten-4">
+    {% block header %}
+      <!-- navigation bar -->
+      {% block navbar %}
+      <nav class="navbar navbar-expand-lg navbar-light bg-warning caja-sombra">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigationBar" aria-controls="navigationBar" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand" href="#" id="titulo">
+          <i class="fa fa-cutlery" aria-hidden="true"></i> {% block content_title %}Restaurantes DAI{% endblock %}
+        </a>
 
-      {% block header %}
+        <div class="collapse navbar-collapse" id="navigationBar">
+          <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+            {% block links %}
+            <li class="nav-item"><a class="nav-link" href="/">Inicio</a></li>
+            <li class="nav-item"><a class="nav-link" href="/restaurants">Restaurantes</a></li>
+            <li class="nav-item"><a class="nav-link" href="/contact">Contacto</a></li>
+            {% endblock %}
+          </ul>
 
-        <!-- navigation bar -->
-        {% block navbar %}
-        <nav>
-          <div class="nav-wrapper">
-            <!-- logo, title & form -->
-            <div class="row">
-              <div class="col s4">
-              </div>
-              <div class="col s4">
-                <p>{% block content_title %}Restaurantes DAI{% endblock %}</p>
-                <p>{% block content_subtitle %}Colección de restaurantes de ejemplo{% endblock %}</p>
-              </div>
-              <div class="col s4">
-                {% if not loggedIn %}
-                <form action="/" method="post">
-                  <p>Usuario: <input type="text" name="username" /></p>
-                  <p>Contraseña: <input type="password" name="password" /></p>
-                  <p><input type="submit" value="Iniciar sesión" />
-                  <button><a href="/register">Registrarse</a></button></p>
-                </form>
-                {% else %}
-                  <div>
-                    <p>Bienvenido, {{ session['username'] }}</p>
-                    <p><a href="/logout">Log out</a></p>
+          <!-- login dropdown -->
+          <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown">
+              <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <b>Login</b> <i class="fa fa-address-book" aria-hidden="true"></i>
+              </button>
+              <ul id="login-dp" class="dropdown-menu dropdown-menu-right">
+                <li>
+                  <div class="row">
+                    <div class="col-md-12">
+                      {% if not loggedIn %}
+                      <form class="form" role="form" action="/" method="post">
+                        <div class="input-group">
+                          <label class="sr-only" for="inputUser">Usuario</label>
+                          <span class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></span>
+                          <input type="text" class="form-control" id="inputUser" name="username" placeholder="Usuario" required />
+                        </div>
+                        <div class="input-group">
+                          <label class="sr-only" for="inputPassword">Contraseña</label>
+                          <span class="input-group-addon"><i class="fa fa-unlock-alt" aria-hidden="true"></i></span>
+                          <input type="password" class="form-control" id="inputUser" name="password" placeholder="Contraseña" required />
+                        </div>
+                        <div class="input-group">
+                          <button type="submit" class="btn btn-success btn-block">Iniciar sesión</button>
+                        </div>
+                      </form>
+                      <div class="dropdown-divider"></div>
+                      <div class="form-group">
+                        <button class="btn btn-success btn-block">
+                          <a href="/register">Registrarse</a>
+                        </button>
+                      </div>
+                      {% else %}
+                      <div class="text-center">
+                        <p>Bienvenido, {{ session['username'] }}</p>
+                        <p><button class="btn btn-primary"><a href="/logout">Cerrar sesión</a></button></p>
+                      </div>
+                      {% endif %}
+                    </div>
                   </div>
-                {% endif %}
-              </div>
-            </div>
-
-            <!-- navbar -->
-            <div class="row">
-              <ul id="nav-mobile" class="left hide-on-med-and-down">
-                {% block links %}
-                  <li><a href="/home">Inicio</a></li>
-                  <li><a href="/home">Inicio</a></li>
-                  <li><a href="/contact">Contact</a></li>
-                {% endblock %}
+                </li>
               </ul>
-            </div>
-          </div>
-        </nav>
-        {% endblock %}
-
+            </li>
+          </ul>
+        </div>
+      </nav>
       {% endblock %}
+    {% endblock %}
 
-
-
-
-
-
-
-
-
-
-      <!-- main content of the page -->
-      {% block content %}
-      <div class="container row">
-        <h1>{% block content_section_title %}Home page{% endblock %}</h1>
-        {% block centeredfield %}
-        <div class="w3-center">
-          <a href="{% block content_image_link %}home{% endblock %}">
-            <img src="../static/images/{% block content_image %}home.png{% endblock %}" class="responsive-img"/>
-          </a>
-        </div>
-        {% endblock %}
-        {% block centeredfield_text %}
-        <div class="w3-center">
-          <p>{% block content_section_text %}Hi, dear visitor. This is my new ugly page.{% endblock %}</p>
-        </div>
+    {% block central_content %}
+      <div class="container caja-sombra text-center">
+        {% block content %}
+          <div class="">
+            <h2>{% block content_section_title %}Inicio{% endblock %}</h2>
+            {% block centeredfield_text %}
+              <div>
+                {% block content_section_text %}
+                  Bienvenido a la base de datos de restaurantes de DAI.
+                {% endblock %}
+              </div>
+            {% endblock %}
+            <br />
+            {% block centeredfield %}
+              <div class="">
+                <a href="{% block content_image_link %}home{% endblock %}">
+                  <img src="../static/images/{% block content_image %}brooke-lark-229136.jpg{% endblock %}" class="img-fluid" style="max-width: 80%"/>
+                </a>
+              </div>
+            {% endblock %}
+          </div>
         {% endblock %}
       </div>
-      {% endblock %}
+    {% endblock %}
 
+    {% block footer %}
+    <footer>
+      <div class="text-center">
+        <p><i class="fa fa-superpowers" aria-hidden="true"></i></p>
+        <p>&copy; Adrián Morente Gabaldón (MIT License) - Universidad de Granada</p>
+      </div>
+    </footer>
+    {% endblock %}
 
-
-
-
-
-
-
-
-
-
-
-
-      {% block footer %}
-      <footer class="page-footer teal darken-2">
-        <div class="container">
-          <div class="row">
-            <div class="col l6 s12">
-              <h5 class="white-text">Adrián Morente Gabaldón</h5>
-              <p class="grey-text text-lighten-4">Proyecto realizado para la asignatura de Desarrollo de Aplicaciones para Internet.</p>
-            </div>
-            <div class="col l4 offset-l2 s12">
-              <h5 class="white-text">Otros enlaces de interés</h5>
-              <ul>
-                <li><a class="grey-text text-lighten-3" href="#!">GitHub</a></li>
-                <li><a class="grey-text text-lighten-3" href="#!">Twitter</a></li>
-                <li><a class="grey-text text-lighten-3" href="#!">LinkedIn</a></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div class="footer-copyright">
-          <div class="container">
-            &copy; Adrián Morente Gabaldón (MIT License) - Universidad de Granada
-          </div>
-        </div>
-      </footer>
-      {% endblock %}
-
-      <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-      <script type="text/javascript" src="../static/js/materialize.min.js"></script>
-
-    </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
 
   </body>
 </html>

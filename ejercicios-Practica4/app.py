@@ -2,12 +2,13 @@
 # -*- coding: utf-8 -*-
 
 from flask import Flask, redirect, url_for, request, render_template, session
+from pymongo import *
 import shelve
 
 app = Flask(__name__)
 app.secret_key = 'random key for me by myself'
 
-# counting the last visited pages
+# testing current session
 @app.before_request
 def try_logged():
     session['logged_in'] = 'username' in session
@@ -54,10 +55,21 @@ def logout():
     session.pop('username', None)
     return redirect(url_for('index'))
 
-# showing a link to my personal github page
-@app.route('/github', methods=['GET', 'POST'])
-def github():
-    return render_template('github.html', loggedIn=session['logged_in'])
+# showing a search form and a table full of restaurants (after searching for them)
+@app.route('/restaurants', methods=['GET', 'POST'])
+def restaurants():
+    return render_template('restaurants.html', loggedIn=session['logged_in'])
+
+@app.route('/search', methods=['POST'])
+def search():
+    client = MongoClient('localhost', 27017)
+    db = client['test']
+    restaurants = db.restaurants
+    option = request.form['field_name']
+    parameter = request.form['parameter']
+    query = restaurants.find({ option : parameter })
+
+    return render_template('restaurants.html', loggedIn=session['logged_in'], value=query)
 
 # showing a link to my personal twitter page
 @app.route('/contact', methods=['GET', 'POST'])
