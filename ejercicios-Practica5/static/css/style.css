@@ -19,26 +19,26 @@ a:hover {
   color: #565656 !important;
 }
 
-#login-dp{
-  min-width: 250px;
-  padding: 14px 14px 0;
-  overflow:hidden;
-  background-color:rgba(255,255,255,.8);
+.login-dp{
+  min-width: 250px !important;
+  padding: 14px 14px 0 !important;
+  overflow:hidden !important;
+  background-color:rgba(255,255,255,.8) !important;
 }
 
-#login-dp .help-block{
-  font-size:12px
+.login-dp .help-block{
+  font-size:12px !important;
 }
 
-#login-dp .bottom{
-  background-color: rgba(255, 255, 255, 0.8);
-  border-top: 1px solid #ddd;
+.login-dp .bottom{
+  background-color: rgba(255, 255, 255, 0.8) !important;
+  border-top: 1px solid #ddd !important;
   clear: both;
-  padding: 14px;
+  padding: 14px !important;
 }
 
-#login-dp .input-group {
-  margin-bottom: 10px;
+.login-dp .input-group {
+  margin-bottom: 10px !important;
 }
 
 .container {
