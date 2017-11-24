@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from flask import Flask, redirect, url_for, request, render_template, session
+from flask import Flask, redirect, url_for, request, render_template, session, jsonify
 from pymongo import *
 import shelve
 
@@ -60,14 +60,26 @@ def logout():
 def restaurants():
     return render_template('restaurants.html', loggedIn=session['logged_in'])
 
-@app.route('/search', methods=['POST'])
+@app.route('/search', methods=['GET'])
 def search():
+    # inicialización de la base de datos y la colección
     client = MongoClient('localhost', 27017)
     db = client['test']
     restaurants = db.restaurants
-    option = request.form['field_name']
-    parameter = request.form['parameter']
-    query = restaurants.find({ option : parameter })
+
+    # nos quedamos con los parámetros get
+    option = request.args.get('field_name', '')
+    if(option == 'zipcode'):
+        option = 'address.zipcode'
+    parameter = request.args.get('parameter', '')
+
+    # en la primera carga, no recibimos número de página
+    if(request.args.get('pagina_py', '')):
+        page = int(request.args.get('pagina_py', ''))
+        query = restaurants.find({ option : parameter }).skip(page*10).limit(10)
+        return query
+    else:
+        query = restaurants.find({ option : parameter }).limit(10)
 
     return render_template('restaurants.html', loggedIn=session['logged_in'], value=query)
 

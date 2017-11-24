@@ -58,11 +58,11 @@ a:hover {
 }
 
 .container {
-  margin-top: 75px !important;
+  margin-top: 40px !important;
   margin-bottom: 75px !important;
   padding: 32px !important;
   border-radius: 10px;
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(255, 255, 255, 0.9);
   color: #212121 !important;
 }
 
@@ -75,7 +75,7 @@ a:hover {
 .full-view .text-center {
   padding: 15px !important;
   border-radius: 10px;
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(255, 255, 255, 0.9);
 }
 
 .caja-sombra {

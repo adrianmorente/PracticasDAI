@@ -7,7 +7,7 @@
 {% block content_image %}{% endblock %}
 {% block content_section_text %}
 <br />
-  <form class="form" action="/search" method="post">
+  <form class="form" action="/search" method="get">
     <div class="radio">
       <label><input type="radio" name="field_name" value="borough" /> Por barriada (Brooklyn, Manhattan, etc.)</label>
     </div>
@@ -15,7 +15,7 @@
       <label><input type="radio" name="field_name" value="cuisine" /> Por tipo de cocina (American, Delicatessen, etc.)</label>
     </div>
     <div class="radio">
-      <label><input type="radio" name="field_name" value="zipcode" /> Por código postal (5 cifras.)</label>
+      <label><input type="radio" name="field_name" value="zipcode" /> Por código postal (p.ej. 11234, 10452, 10475.)</label>
     </div>
     <br /><input type="text" class="form-control col-xs-3 text-center" name="parameter" placeholder="Busque por cuisine, borough..." required />
     <br /><button type="submit" class="btn btn-success btn-block">Buscar</button>
@@ -23,15 +23,18 @@
   <br />
   {% if value is defined %}
     <div class="table-responsive">
-      <table class="table table-striped text-center">
-        <tr>
-          <th>Nombre</th>
-          <th>ID Restaurante</th>
-          <th>Dirección</th>
-          <th>Barrio</th>
-          <th>Tipo de cocina</th>
-        </tr>
+      <table id="tabla-restaurantes" class="table table-sm table-striped table-hover">
+        <thead class="table-success">
+          <tr>
+            <th>Nombre</th>
+            <th>ID Restaurante</th>
+            <th>Dirección</th>
+            <th>Barrio</th>
+            <th>Tipo de cocina</th>
+          </tr>
+        </thead>
         {% for rest in value %}
+        <tbody class="table-active">
           <tr>
             <td>{{ rest['name'] }}</td>
             <td>{{ rest['restaurant_id'] }}</td>
@@ -39,11 +42,22 @@
             <td>{{ rest['borough'] }}</td>
             <td>{{ rest['cuisine'] }}</td>
           </tr>
+        </tbody>
         {% endfor %}
       </table>
     </div>
+    <nav aria-label="Page navigation example">
+      <ul class="pagination justify-content-center">
+        <li class="page-item">
+          <a class="page-link" id="paginacion-atras" href="#" tabindex="-1">Anterior</a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" id="paginacion-adelante" href="#">Siguiente</a>
+        </li>
+      </ul>
+    </nav>
   {% else %}
-    <p>La búsqueda no produjo ningún resultado...</p>
+    <p>Prueba a realizar una búsqueda correcta.</p>
   {% endif %}
 
 {% endblock %}

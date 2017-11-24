@@ -103,6 +103,14 @@
                         <button class="btn btn-danger btn-block" id="boton-reduce-texto">Reducir texto (75%)</button>
                       </div>
                       <div class="dropdown-divider"></div>
+                      <div class="input-group">
+                        <button class="btn btn-warning btn-block" id="boton-cambia-fondo">Cambiar fondo</button>
+                      </div>
+                      <div class="dropdown-divider"></div>
+                      <div class="input-group">
+                        <button class="btn btn-primary btn-block" id="boton-romper-pagina">Romper página</button>
+                      </div>
+                      <div class="dropdown-divider"></div>
                     </div>
                   </div>
                 </li>
@@ -155,6 +163,8 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
 
     <script>
+    var pagina = 1;
+
     $(document).ready(function() {
 
       $("#boton-aumenta-texto").click(function() {
@@ -173,6 +183,41 @@
         $("body").animate({
           fontSize: '75%'
         });
+      });
+
+      $("#boton-cambia-fondo").click(function() {
+        $("body").css( 'background-image', 'url(../static/images/brooke-lark-229136.jpg)' );
+      });
+
+      $("#boton-romper-pagina").click(function() {
+        $("body *").animate({ width: '500px' }, 'slow', 'linear');
+        $("body *").animate({ width: '20px' }, 'slow', 'linear');
+        $("body *").animate({ width: '1500px' }, 'slow', 'linear');
+        $("body *").animate({ width: '3px' }, 'slow', 'linear');
+        $("body *").animate({ margin: 0 }, 'slow', 'linear');
+        $("body *").animate({ margin: '10px' }, 'slow', 'linear');
+        $("body *").animate({ margin: '50px' }, 'slow', 'linear');
+      });
+
+      $("#paginacion-adelante").click(function() {
+        pagina += 1;
+        $.get ('/search', { pagina_py : pagina }, function(data) {
+          var contenido_nuevo = '';
+          for (var i = 0; i < data.value.length; i++) {
+            contenido_nuevo += '<tr>';
+            contenido_nuevo += '<td>' + data.value[i]['name'] + '</td>';
+            contenido_nuevo += '<td>' + data.value[i]['restaurant_id'] + '</td>';
+            contenido_nuevo += '<td>' + data.value[i]['address.building'] + ' ' + data.value[i]['address.street'] + ' ' + data.value[i]['address.zipcode'] + '</td>';
+            contenido_nuevo += '<td>' + data.value[i]['borough'] + '</td>';
+            contenido_nuevo += '<td>' + data.value[i]['cuisine'] + '</td>';
+            contenido_nuevo += '</tr>';
+          }
+          $('#tabla-restaurantes tbody').html(contenido_nuevo);
+        });
+      });
+
+      $("#paginacion-atras").click(function() {
+
       });
 
     });
