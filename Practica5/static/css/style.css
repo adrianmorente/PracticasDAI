@@ -6,6 +6,18 @@ body {
   color: white !important;
 }
 
+nav a {
+  color: black !important;
+}
+
+nav button a {
+  color: white !important;
+}
+
+img {
+  width: 70% !important;
+}
+
 #titulo {
   font-size: 150%;
 }
@@ -80,10 +92,15 @@ table {
 }
 
 footer {
-  position: relative;
+  position: fixed;
   width: 100%;
   bottom: 0;
   background-color: #2d2d30;
   color: #f5f5f5;
-  padding: 6px;
+  padding: 3px;
+  font-size: 80%;
+}
+
+footer p {
+  margin-bottom: 2px;
 }

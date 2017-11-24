@@ -27,7 +27,7 @@
     {% block header %}
       <!-- navigation bar -->
       {% block navbar %}
-      <nav class="navbar navbar-expand-lg navbar-light bg-warning caja-sombra">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-warning caja-sombra">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigationBar" aria-controls="navigationBar" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -48,7 +48,7 @@
           <ul class="nav navbar-nav navbar-right">
             <li class="dropdown">
               <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <b>Login</b> <i class="fa fa-address-book" aria-hidden="true"></i>
+                <b>Usuario</b> <i class="fa fa-address-book" aria-hidden="true"></i>
               </button>
               <ul class="dropdown-menu dropdown-menu-right login-dp">
                 <li>
@@ -57,12 +57,10 @@
                       {% if not loggedIn %}
                       <form class="form" role="form" action="/" method="post">
                         <div class="input-group">
-                          <label class="sr-only" for="inputUser">Usuario</label>
                           <span class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></span>
                           <input type="text" class="form-control" id="inputUser" name="username" placeholder="Usuario" required />
                         </div>
                         <div class="input-group">
-                          <label class="sr-only" for="inputPassword">Contraseña</label>
                           <span class="input-group-addon"><i class="fa fa-unlock-alt" aria-hidden="true"></i></span>
                           <input type="password" class="form-control" id="inputUser" name="password" placeholder="Contraseña" required />
                         </div>
@@ -89,7 +87,7 @@
             </li>
             <li id="cambiador-visualizacion" class="dropdown">
               <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <b>Cambiar visualización</b> <i class="fa fa-address-book" aria-hidden="true"></i>
+                <b>Cambiar visualización</b> <i class="fa fa-bell" aria-hidden="true"></i>
               </button>
               <ul class="dropdown-menu dropdown-menu-right login-dp">
                 <li>
