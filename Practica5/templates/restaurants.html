@@ -1,0 +1,48 @@
+{% extends "index.html" %}
+{% block title %}Búsqueda de restaurantes{% endblock %}
+{% block content_section_title %}
+  Base de datos de restaurantes
+{% endblock %}
+{% block content_image_link %}{% endblock %}
+{% block content_image %}{% endblock %}
+{% block content_section_text %}
+  <form class="form" action="/search" method="post">
+    <br /><div class="radio">
+      <label><input type="radio" name="field_name" value="borough" /> <b>Por barriada</b> (Brooklyn, Manhattan, etc.)</label>
+    </div>
+    <br /><div class="radio">
+      <label><input type="radio" name="field_name" value="cuisine" /> <b>Por tipo de cocina</b> (American, Delicatessen, etc.)</label>
+    </div>
+    <br /><div class="radio">
+      <label><input type="radio" name="field_name" value="address.zipcode" /> <b>Por código postal</b> (5 cifras.)</label>
+    </div>
+    <br /><input type="text" class="form-control col-xs-3 text-center" name="parameter" placeholder="Busque por cuisine, borough..." required />
+    <br /><button type="submit" class="btn btn-success">Buscar</button>
+  </form>
+  <br />
+  {% if value is defined %}
+    <div class="table-responsive">
+      <table class="table table-striped text-center">
+        <tr>
+          <th>Nombre</th>
+          <th>ID Restaurante</th>
+          <th>Dirección</th>
+          <th>Barrio</th>
+          <th>Tipo de cocina</th>
+        </tr>
+        {% for rest in value %}
+          <tr>
+            <td>{{ rest['name'] }}</td>
+            <td>{{ rest['restaurant_id'] }}</td>
+            <td>{{ rest['address'].building }},  {{ rest['address'].street }}, zip: {{ rest['address'].zipcode }}</td>
+            <td>{{ rest['borough'] }}</td>
+            <td>{{ rest['cuisine'] }}</td>
+          </tr>
+        {% endfor %}
+      </table>
+    </div>
+  {% else %}
+    <p>La búsqueda no produjo ningún resultado...</p>
+  {% endif %}
+
+{% endblock %}

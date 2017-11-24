@@ -1,0 +1,17 @@
+{% extends "index.html" %}
+{% block title %}My GitHub account{% endblock %}
+{% block content_title %}Adrian Morente{% endblock %}
+{% block content_subtitle %}
+  You're logged, so you can edit your data.
+{% endblock %}
+{% block content_section_title %}
+  Edit your things!
+{% endblock %}
+{% block centeredfield %}
+  <form action="/editing" method="post">
+    <p>Actual username: <input type="text" name="username" value="{{ value.username }}" />
+    <br><br>Actual password: <input type="text" name="password" value="{{ value.password }}" />
+    <br><br><input type="submit" value="Save changes" /></p>
+  </form>
+{% endblock %}
+{% block centeredfield_text %}{% endblock %}
