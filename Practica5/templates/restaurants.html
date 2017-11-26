@@ -9,7 +9,7 @@
 <br />
   <form class="form" action="/search" method="post">
     <div class="radio">
-      <label><input type="radio" name="field_name" value="borough" /> Por barriada (Brooklyn, Manhattan, etc.)</label>
+      <label><input type="radio" name="field_name" value="borough" /> Por barrio (Brooklyn, Manhattan, etc.)</label>
     </div>
     <div class="radio">
       <label><input type="radio" name="field_name" value="cuisine" /> Por tipo de cocina (American, Delicatessen, etc.)</label>
@@ -78,7 +78,7 @@
         pagina -= 1;
         leer_datos_ajax();
       });
-    }
+    };
 
     // realiza la consulta de la página especificada al servidor y obtiene los
     //   resultados, cargándolos en la tabla dedicada
@@ -89,6 +89,7 @@
         // hay que vaciar la tabla para mostrar solo 10 resultados
         $('#tabla-restaurantes tbody').empty();
 
+        // rellenamos la tabla con los nuevos datos
         for (r in rests){
           $('#tabla-restaurantes tbody').append('<tr><td>'+ rests[r]['name'] +'</td>' +
             '<td>'+ rests[r]['address'].building + ' ' + rests[r]['address'].street + ' ' + rests[r]['address'].zipcode +'</td>' +
@@ -96,7 +97,7 @@
             '<td>'+ rests[r]['cuisine'] +'</td></tr>');
         }
       });
-    }
+    };
 
   </script>
 
