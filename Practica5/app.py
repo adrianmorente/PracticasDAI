@@ -1,8 +1,9 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from flask import Flask, redirect, url_for, request, render_template, session, jsonify
+from flask import Flask, redirect, url_for, request, render_template, session
 from pymongo import *
+from bson.json_util import dumps
 import shelve
 
 app = Flask(__name__)
@@ -60,7 +61,7 @@ def logout():
 def restaurants():
     return render_template('restaurants.html', loggedIn=session['logged_in'])
 
-@app.route('/search', methods=['GET'])
+@app.route('/search', methods=['POST'])
 def search():
     # inicialización de la base de datos y la colección
     client = MongoClient('localhost', 27017)
@@ -68,20 +69,27 @@ def search():
     restaurants = db.restaurants
 
     # nos quedamos con los parámetros get
-    option = request.args.get('field_name', '')
-    if(option == 'zipcode'):
-        option = 'address.zipcode'
-    parameter = request.args.get('parameter', '')
+    option = request.form['field_name']
+    parameter = request.form['parameter']
+    query = restaurants.find({ option : parameter }).limit(10)
 
-    # en la primera carga, no recibimos número de página
-    if(request.args.get('pagina_py', '')):
-        page = int(request.args.get('pagina_py', ''))
-        query = restaurants.find({ option : parameter }).skip(page*10).limit(10)
-        return query
-    else:
-        query = restaurants.find({ option : parameter }).limit(10)
+    return render_template('restaurants.html', loggedIn=session['logged_in'], value=query, campo=option, param=parameter)
 
-    return render_template('restaurants.html', loggedIn=session['logged_in'], value=query)
+@app.route('/search-ajax', methods=['GET'])
+def search_ajax():
+    # inicialización de la base de datos y la colección
+    client = MongoClient('localhost', 27017)
+    db = client['test']
+    restaurants = db.restaurants
+
+    # nos quedamos con los parámetros get
+    option = request.args.get('campo', '')
+    parameter = request.args.get('param', '')
+    pagina_py = int(request.args.get('pagina_py', 1))-1
+    query = restaurants.find({ option : parameter }).skip(pagina_py*10).limit(10)
+
+    return dumps(query)
+
 
 # showing a link to my personal twitter page
 @app.route('/contact', methods=['GET', 'POST'])
