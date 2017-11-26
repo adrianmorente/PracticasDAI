@@ -163,7 +163,6 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
 
     <script>
-    var pagina = 1;
 
     $(document).ready(function() {
 
@@ -199,26 +198,7 @@
         $("body *").animate({ margin: '50px' }, 'slow', 'linear');
       });
 
-      $("#paginacion-adelante").click(function() {
-        pagina += 1;
-        $.get ('/search', { pagina_py : pagina }, function(data) {
-          var contenido_nuevo = '';
-          for (var i = 0; i < data.value.length; i++) {
-            contenido_nuevo += '<tr>';
-            contenido_nuevo += '<td>' + data.value[i]['name'] + '</td>';
-            contenido_nuevo += '<td>' + data.value[i]['restaurant_id'] + '</td>';
-            contenido_nuevo += '<td>' + data.value[i]['address.building'] + ' ' + data.value[i]['address.street'] + ' ' + data.value[i]['address.zipcode'] + '</td>';
-            contenido_nuevo += '<td>' + data.value[i]['borough'] + '</td>';
-            contenido_nuevo += '<td>' + data.value[i]['cuisine'] + '</td>';
-            contenido_nuevo += '</tr>';
-          }
-          $('#tabla-restaurantes tbody').html(contenido_nuevo);
-        });
-      });
-
-      $("#paginacion-atras").click(function() {
-
-      });
+      inicializar_botones();
 
     });
     </script>
