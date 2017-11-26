@@ -1,7 +1,9 @@
 # PracticasDAI
-Repositorio dedicado a los ejercicios de la asignatura Desarrollo de Aplicaciones para Internet.
+Repositorio dedicado a los ejercicios y prácticas de la asignatura Desarrollo de Aplicaciones para Internet.
 
 ---
+
+La mayoría de las prácticas suceden a la anterior de forma incremental, pero las alojaré aquí todas por separado, con la siguiente división:
 
 ### Secciones
 
