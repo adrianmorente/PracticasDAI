@@ -7,7 +7,7 @@
 {% block content_image %}{% endblock %}
 {% block content_section_text %}
 <br />
-  <form class="form" action="/search" method="get">
+  <form class="form" action="/search" method="post">
     <div class="radio">
       <label><input type="radio" name="field_name" value="borough" /> Por barriada (Brooklyn, Manhattan, etc.)</label>
     </div>
@@ -15,7 +15,7 @@
       <label><input type="radio" name="field_name" value="cuisine" /> Por tipo de cocina (American, Delicatessen, etc.)</label>
     </div>
     <div class="radio">
-      <label><input type="radio" name="field_name" value="zipcode" /> Por código postal (p.ej. 11234, 10452, 10475.)</label>
+      <label><input type="radio" name="field_name" value="address.zipcode" /> Por código postal (p.ej. 11234, 10452, 10475.)</label>
     </div>
     <br /><input type="text" class="form-control col-xs-3 text-center" name="parameter" placeholder="Busque por cuisine, borough..." required />
     <br /><button type="submit" class="btn btn-success btn-block">Buscar</button>
@@ -27,23 +27,21 @@
         <thead class="table-success">
           <tr>
             <th>Nombre</th>
-            <th>ID Restaurante</th>
             <th>Dirección</th>
             <th>Barrio</th>
             <th>Tipo de cocina</th>
           </tr>
         </thead>
-        {% for rest in value %}
         <tbody class="table-active">
+          {% for rest in value %}
           <tr>
             <td>{{ rest['name'] }}</td>
-            <td>{{ rest['restaurant_id'] }}</td>
             <td>{{ rest['address'].building }},  {{ rest['address'].street }}, zip: {{ rest['address'].zipcode }}</td>
             <td>{{ rest['borough'] }}</td>
             <td>{{ rest['cuisine'] }}</td>
           </tr>
+          {% endfor %}
         </tbody>
-        {% endfor %}
       </table>
     </div>
     <nav aria-label="Page navigation example">
@@ -59,5 +57,47 @@
   {% else %}
     <p>Prueba a realizar una búsqueda correcta.</p>
   {% endif %}
+
+  <script>
+
+    // al cargar el documento, se muestra por defecto la página 1
+    var pagina = 1;
+
+    // antes de cada nueva solicitud, consultamos la inmediatamente anterior
+    var campo = '{{ campo }}';
+    var param = '{{ param }}';
+
+    // en cada click a uno de los botones, cargamos la página deseada
+    function inicializar_botones() {
+      $("#paginacion-adelante").click(function() {
+        pagina += 1;
+        leer_datos_ajax();
+      });
+
+      $("#paginacion-atras").click(function() {
+        pagina -= 1;
+        leer_datos_ajax();
+      });
+    }
+
+    // realiza la consulta de la página especificada al servidor y obtiene los
+    //   resultados, cargándolos en la tabla dedicada
+    function leer_datos_ajax() {
+      $.get ('/search-ajax', { pagina_py : pagina, campo : campo, param : param }, function(data) {
+        var rests = JSON.parse(data);
+
+        // hay que vaciar la tabla para mostrar solo 10 resultados
+        $('#tabla-restaurantes tbody').empty();
+
+        for (r in rests){
+          $('#tabla-restaurantes tbody').append('<tr><td>'+ rests[r]['name'] +'</td>' +
+            '<td>'+ rests[r]['address'].building + ' ' + rests[r]['address'].street + ' ' + rests[r]['address'].zipcode +'</td>' +
+            '<td>'+ rests[r]['borough'] +'</td>' +
+            '<td>'+ rests[r]['cuisine'] +'</td></tr>');
+        }
+      });
+    }
+
+  </script>
 
 {% endblock %}
