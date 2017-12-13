@@ -5,6 +5,7 @@
 {% endblock %}
 {% block content_image_link %}{% endblock %}
 {% block content_image %}{% endblock %}
+{% block centeredfield %}{% endblock %}
 {% block content_section_text %}
 <br />
   <form class="form" action="/search" method="post">
@@ -36,7 +37,7 @@
           {% for rest in value %}
           <tr>
             <td>{{ rest['name'] }}</td>
-            <td>{{ rest['address'].building }},  {{ rest['address'].street }}, zip: {{ rest['address'].zipcode }}</td>
+            <td>{{ rest['address'].building }} {{ rest['address'].street }} {{ rest['address'].zipcode }}</td>
             <td>{{ rest['borough'] }}</td>
             <td>{{ rest['cuisine'] }}</td>
           </tr>
@@ -75,7 +76,7 @@
       });
 
       $("#paginacion-atras").click(function() {
-        pagina -= 1;
+        pagina = (pagina-1 < 0) ? 0 : pagina-1;
         leer_datos_ajax();
       });
     };
