@@ -85,7 +85,7 @@ def search_ajax():
     # nos quedamos con los parámetros get
     option = request.args.get('campo', '')
     parameter = request.args.get('param', '')
-    pagina_py = int(request.args.get('pagina_py', 1))-1
+    pagina_py = int(request.args.get('pagina_py', 1))
     query = restaurants.find({ option : parameter }).skip(pagina_py*10).limit(10)
 
     return dumps(query)
