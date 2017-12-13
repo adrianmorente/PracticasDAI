@@ -31,7 +31,7 @@
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigationBar" aria-controls="navigationBar" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <a class="navbar-brand" href="#" id="titulo-master">
+        <a class="navbar-brand" href="/" id="titulo-master">
           <i class="fa fa-cutlery" aria-hidden="true"></i> {% block content_title %}Restaurantes DAI{% endblock %}
         </a>
 
@@ -69,11 +69,11 @@
                         </div>
                       </form>
                       <div class="dropdown-divider"></div>
-                      <div class="form-group">
-                        <button class="btn btn-success btn-block">
-                          <a href="/register">Registrarse</a>
-                        </button>
-                      </div>
+                      <form class="form" action="/register">
+                        <div class="form-group">
+                          <button class="btn btn-success btn-block">Registrarse</button>
+                        </div>
+                      </form>
                       {% else %}
                       <div class="text-center">
                         <p>Bienvenido, {{ session['username'] }}</p>
@@ -137,7 +137,7 @@
             <br />
             {% block centeredfield %}
               <div class="">
-                <a href="{% block content_image_link %}home{% endblock %}">
+                <a href="{% block content_image_link %}/{% endblock %}">
                   <img src="../static/images/{% block content_image %}brooke-lark-229136.jpg{% endblock %}" class="img-fluid" style="max-width: 80%"/>
                 </a>
               </div>
