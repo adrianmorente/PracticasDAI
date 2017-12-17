@@ -29,9 +29,7 @@ def search(request):
 
 def search_ajax(request):
     data_field = request.GET.get('data_field', '')
-    print("field: %s" % data_field)
     field_content = request.GET.get('field_content', '')
-    print("content: %s" % field_content)
     page_py = int(request.GET.get('page_py', 1))
     query = restaurantes.find({ data_field : field_content }).skip(page_py*10).limit(10)
     return HttpResponse(dumps(query))
