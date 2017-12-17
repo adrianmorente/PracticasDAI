@@ -1,0 +1,16 @@
+{% extends "restaurantes/full-view.html" %}
+{% block title %}
+  You lost yourself...
+{% endblock %}
+{% block content %}
+  {% block centeredcontent %}
+    <p>ERROR 404: Resource not found.</p><br />
+    <p>IT SEEMS LIKE YOU'RE LOST...</p>
+    <p>Maybe you mistyped the URL?!</p>
+    <p>
+      <a href="home">
+        <button class="btn btn-primary">BACK TO HOME</button>
+      </a>
+    </p>
+  {% endblock %}
+{% endblock %}

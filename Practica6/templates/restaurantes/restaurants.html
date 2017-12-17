@@ -1,0 +1,110 @@
+{% extends "restaurantes/index.html" %}
+{% block title %}Búsqueda de restaurantes{% endblock %}
+{% block content_section_title %}
+  Base de datos de restaurantes
+{% endblock %}
+{% block content_image_link %}{% endblock %}
+{% block content_image %}{% endblock %}
+{% block centeredfield %}{% endblock %}
+{% block content_section_text %}
+<br />
+  <form action="/search/" method="post">
+    {% csrf_token %}
+    <div class="radio">
+      <label><input type="radio" name="field_name" value="borough" /> Por barrio (Brooklyn, Manhattan, etc.)</label>
+    </div>
+    <div class="radio">
+      <label><input type="radio" name="field_name" value="cuisine" /> Por tipo de cocina (American, Delicatessen, etc.)</label>
+    </div>
+    <div class="radio">
+      <label><input type="radio" name="field_name" value="address.zipcode" /> Por código postal (p.ej. 11234, 10452, 10475.)</label>
+    </div>
+    <br /><input type="text" class="form-control col-xs-3 text-center" name="parameter" placeholder="Realice aquí su búsqueda." required />
+    <br /><button type="submit" class="btn btn-success btn-block">Buscar</button>
+  </form>
+  <br />
+  {% if list %}
+    <div class="table-responsive">
+      <table id="tabla-restaurantes" class="table table-sm table-striped table-hover">
+        <thead class="table-success">
+          <tr>
+            <th>Nombre</th>
+            <th>Dirección</th>
+            <th>Barrio</th>
+            <th>Tipo de cocina</th>
+          </tr>
+        </thead>
+        <tbody class="table-active">
+          {% for rest in list %}
+            <tr>
+              <td>{{ rest.name }}</td>
+              <td>{{ rest.address.building }} {{ rest.address.street }} {{ rest.address.zipcode }}</td>
+              <td>{{ rest.borough }}</td>
+              <td>{{ rest.cuisine }}</td>
+            </tr>
+          {% empty %}
+            <p>
+              La búsqueda no obtuvo resultados...
+            </p>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <nav aria-label="Page navigation example">
+      <ul class="pagination justify-content-center">
+        <li class="page-item">
+          <a class="page-link" id="paginacion-atras" href="#" tabindex="-1">Anterior</a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" id="paginacion-adelante" href="#">Siguiente</a>
+        </li>
+      </ul>
+    </nav>
+  {% else %}
+    <p>Prueba a realizar una búsqueda correcta.</p>
+  {% endif %}
+
+  <script>
+
+    // al cargar el documento, se muestra por defecto la página 1
+    var page = 1;
+
+    // antes de cada nueva solicitud, consultamos la inmediatamente anterior
+    var field = '{{ data_field }}';
+    var param = '{{ field_content }}';
+
+    // en cada click a uno de los botones, cargamos la página deseada
+    function inicializar_botones() {
+      $("#paginacion-adelante").click(function() {
+        page += 1;
+        leer_datos_ajax();
+      });
+
+      $("#paginacion-atras").click(function() {
+        page = (page-1 < 0) ? 0 : page-1;
+        leer_datos_ajax();
+      });
+    };
+
+    // realiza la consulta de la página especificada al servidor y obtiene los
+    //   resultados, cargándolos en la tabla dedicada
+    function leer_datos_ajax() {
+      $.get ('/search-ajax/', { page_py : page, data_field : field, field_content : param }, function(data) {
+        var rests = JSON.parse(data);
+
+        // hay que vaciar la tabla para mostrar solo 10 resultados
+        $('#tabla-restaurantes tbody').empty();
+
+        // rellenamos la tabla con los nuevos datos
+        for (r in rests){
+          $('#tabla-restaurantes tbody').append('<tr><td>'+ rests[r]['name'] +'</td>' +
+            '<td>'+ rests[r]['address'].building + ' ' + rests[r]['address'].street + ' ' + rests[r]['address'].zipcode +'</td>' +
+            '<td>'+ rests[r]['borough'] +'</td>' +
+            '<td>'+ rests[r]['cuisine'] +'</td></tr>');
+        }
+      });
+    };
+
+  </script>
+
+{% endblock %}
