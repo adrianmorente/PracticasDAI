@@ -10,5 +10,6 @@ urlpatterns = [
   url(r'^restaurants/$', views.restaurants),
   url(r'^contact/$', views.contact),
   url(r'^search/$', views.search),
-  url(r'^search-ajax/$', views.search_ajax)
+  url(r'^search-ajax/$', views.search_ajax),
+  url(r'^add_restaurant/$', views.add_restaurant)
 ]
