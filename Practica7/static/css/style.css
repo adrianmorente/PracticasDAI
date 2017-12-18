@@ -90,6 +90,10 @@ a:hover {
   color: white !important;
 }
 
+#pill-add {
+  text-align: left !important;
+}
+
 #pills-tabContent {
   border-radius: 5px;
   border: 1px solid rgba(30, 138, 24, 0.6) !important;
