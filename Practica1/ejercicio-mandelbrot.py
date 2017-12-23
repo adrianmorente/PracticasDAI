@@ -16,6 +16,6 @@ y2 = int(input("Introduce the value for y2 --> "))
 width = int(input("Introduce the value for the width --> "))
 iters = int(input("Introduce the value for the iterations --> "))
 
-print ("\nDepending on the size, this can be take time...")
+print ("\nDepending on the size, this can take time...")
 renderizaMandelbrot(x1, y1, x2, y2, width, iters, filename)
 print ("\nDone!")
