@@ -1,0 +1,53 @@
+{% extends "restaurantes/index.html" %} {% block content %}
+{% load static%}
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/series-label.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+
+<div class="container-fluid bg-2 text-center main-content">
+  <h2 class="margin">Estadísticas de Restaurantes</h2>
+  <div id="chart-container" style="min-width: 310px; max-width: 900px; height: 400px; margin: 0 auto"></div>
+</div>
+
+<script>
+  Highcharts.chart('chart-container', {
+    chart: {
+      type: 'column'
+    },
+    title: {
+      text: 'Estilo de cocina por barrios'
+    },
+    xAxis: {
+      categories: ['Bronx', 'Queens', 'Brooklyn', 'Staten Island', 'Manhattan']
+    },
+    yAxis: {
+      min: 0,
+      title: {
+        text: ''
+      }
+    },
+    tooltip: {
+      pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b> ({point.percentage:.0f}%)<br/>',
+      shared: true
+    },
+    plotOptions: {
+      column: {
+          stacking: 'normal'
+      }
+    },
+    series: [{
+      name: 'Bakery',
+      data: {{ bakery }}
+    }, {
+      name: 'American',
+      data: {{ american }}
+    }, {
+      name: 'Hamburgers',
+      data: {{ hamburgers }}
+    }, {
+      name: 'Pizza',
+      data: {{ pizza }}
+    }]
+  });
+</script>
+{% endblock %}

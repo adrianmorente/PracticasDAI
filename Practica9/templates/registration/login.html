@@ -1,0 +1,17 @@
+{% extends "restaurantes/index.html" %}
+{% load i18n %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/simple-modal.css' %}" />
+
+{% block content %}
+<form class="form" method="post" action=".">
+  {% csrf_token %}
+  {{ form.as_p }}
+
+  <button class="btn btn-lg btn-primary btn-block" type="submit">{% trans 'Log in' %}</button>
+  <input type="hidden" name="next" value="{{ next }}" />
+</form>
+<br />
+<p class="footer-login">{% trans "Forgot password" %}? <a href="{% url 'auth_password_reset' %}">{% trans "Reset it" %}</a>!</p>
+<p class="footer-login">{% trans "Not member" %}? <a href="{% url 'registration_register' %}">{% trans "Register" %}</a>!</p>
+{% endblock %}

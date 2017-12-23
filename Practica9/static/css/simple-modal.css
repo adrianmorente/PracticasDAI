@@ -1,0 +1,22 @@
+.helptext {
+  display: none;
+}
+
+.container .form p input {
+  text-align: center;
+  border-radius: 5px;
+  border: 2px solid green;
+  color: black;
+  display: block;
+  margin-left: 41%;
+}
+
+.container .form p label {
+  display: block;
+}
+
+.footer-login {
+  color: green;
+  font-weight: bold;
+  font-size: 90%;
+}
