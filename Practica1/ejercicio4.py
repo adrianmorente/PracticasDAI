@@ -5,8 +5,6 @@ import os
 
 # we'll read a number `n` from a file, and we'll write
 #the n-th number of the Fibonnaci sequence in another one.
-
-#
 def write_number_to_file(number, file):
     dest_file = open(file, 'w')
     dest_file.write(str(number))
